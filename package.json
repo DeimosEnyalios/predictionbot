@@ -1,0 +1,21 @@
+{
+  "name": "PredictionBot",
+  "version": "1.0.0",
+  "description": "Twitch chatBot for collecting predictions and finding winners",
+  "main": "predictionbot.js",
+  "scripts": {
+    "install ts": "npm install -g typescript",
+    "run": "node target/predictionbot.js",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "keywords": [],
+  "author": "Robert Frank <robert.rf.frank@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "tmi.js": "^1.8.5",
+    "@types/tmi.js": "^1.8.1",
+    "dotenv": "^14.3.0",
+    "@types/node": "^17.0.8"
+  }
+}
