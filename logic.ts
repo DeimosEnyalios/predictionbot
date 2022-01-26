@@ -1,7 +1,6 @@
 import {ChatUserstate, Client} from "tmi.js";
 import {isCommand, isSpecialUser, log} from "./util";
 import {state} from "./types";
-import * as process from "process";
 
 export function prediction(state:state, tags: ChatUserstate, msg: string):boolean {
     if(!Number.isNaN(+msg)) {
@@ -114,9 +113,9 @@ export function isSpecial(tags: ChatUserstate) {
 export function write(state:state, channel: string, client: Client) {
     if (state.doAnswer) {
         if(process.env.TESTRUN == "true"){
-            client.say(channel, `${state.answer}`);
-        }else{
             client.whisper(process.env.TESTUSER, state.answer);
+        }else{
+            client.say(channel, `${state.answer}`);
         }
     }
 }

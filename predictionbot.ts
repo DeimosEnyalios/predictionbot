@@ -1,7 +1,7 @@
 import {ChatUserstate, Client, Events} from "tmi.js";
 import * as dotenv from "dotenv";
 import {isCommand, isSpecialUser, log, logDebug} from "./util";
-import {info, modinfo, prediction, resetAnswer, start, stop, result, winner, isSpecial, write, offByOne} from "./logic";
+import * as logic from "./logic";
 import {state} from "./types";
 
 dotenv.config();
@@ -26,14 +26,14 @@ const state:state = {
 const onMessageHandler: Events["message"] = (channel, tags, message, self) => {
 
 
-    resetAnswer(state);
+    logic.resetAnswer(state);
 
     let msg = message.trim();
 
     logDebug(`${tags['display-name']} - ${tags.mod} - ${msg}`);
 
     if (!Number.isNaN(+msg)) {
-        prediction(state, tags, msg);
+        logic.prediction(state, tags, msg);
         return;
     }
 
@@ -41,20 +41,20 @@ const onMessageHandler: Events["message"] = (channel, tags, message, self) => {
 
     msg = msg.toLowerCase();
 
-    info(state,msg);
+    logic.info(state,msg);
 
-    if(!isSpecial(tags)){//user not allowed to control the bot
-        write(state,channel,client);
+    if(!logic.isSpecial(tags)){//user not allowed to control the bot
+        logic.write(state,channel,client);
         return;
     }
 
-    modinfo(state,msg);
-    start(state,msg);
-    stop(state,msg);
-    result(state,msg);
-    winner(state,msg);
-    offByOne(state,msg);
-    write(state,channel,client);
+    logic.modinfo(state,msg);
+    logic.start(state,msg);
+    logic.stop(state,msg);
+    logic.result(state,msg);
+    logic.winner(state,msg);
+    logic.offByOne(state,msg);
+    logic.write(state,channel,client);
 }
 
 const onConnectedHandler: Events["connected"] = (addr, port) => {
