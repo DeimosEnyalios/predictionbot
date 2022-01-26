@@ -130,15 +130,15 @@ export function offByOne(state,msg) {
         state.predictions.forEach((value, key) => {if(+value === (+result+1)) {offByOners.push(key)}});
         offByOners.sort();
         if(offByOners.length == 0){
-            state.answer += `${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE} no one ${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE}`;
+            state.answer += `${process.env.EMOTE} ${process.env.EMOTE} ${process.env.EMOTE} no one ${process.env.EMOTE} ${process.env.EMOTE} ${process.env.EMOTE}`;
             log('no offByOne');
         }else{
             let off = offByOners.join(', ');
             log(`offByOne: ${off}`);
             if(off.length < state.size){
-                state.answer +=  `${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE} ${off} ${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE}`;
+                state.answer +=  `${process.env.EMOTE} ${process.env.EMOTE} ${process.env.EMOTE} ${off} ${process.env.EMOTE} ${process.env.EMOTE} ${process.env.EMOTE}`;
             }else{
-                state.answer +=  `${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE} too many ${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE}`;
+                state.answer +=  `${process.env.EMOTE} ${process.env.EMOTE} ${process.env.EMOTE} too many ${process.env.EMOTE} ${process.env.EMOTE} ${process.env.EMOTE}`;
             }
         }
         log(`The result is: ${result}`);
