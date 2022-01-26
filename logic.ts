@@ -113,7 +113,7 @@ export function isSpecial(tags: ChatUserstate) {
 export function write(state:state, channel: string, client: Client) {
     if (state.doAnswer) {
         if(process.env.TESTRUN == "true"){
-            client.whisper(process.env.TESTUSER, state.answer);
+            client.say(process.env.TESTUSER, `${state.answer}`);
         }else{
             client.say(channel, `${state.answer}`);
         }
