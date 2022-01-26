@@ -1,7 +1,7 @@
 import {ChatUserstate, Client, Events} from "tmi.js";
 import * as dotenv from "dotenv";
 import {isCommand, isSpecialUser, log, logDebug} from "./util";
-import {info, modinfo, prediction, resetAnswer, start, stop, result, winner, isSpecial} from "./logic";
+import {info, modinfo, prediction, resetAnswer, start, stop, result, winner, isSpecial, write, offByOne} from "./logic";
 import {state} from "./types";
 
 dotenv.config();
@@ -44,7 +44,7 @@ const onMessageHandler: Events["message"] = (channel, tags, message, self) => {
     info(state,msg);
 
     if(!isSpecial(tags)){//user not allowed to control the bot
-        write(channel);
+        write(state,channel,client);
         return;
     }
 
@@ -53,15 +53,12 @@ const onMessageHandler: Events["message"] = (channel, tags, message, self) => {
     stop(state,msg);
     result(state,msg);
     winner(state,msg);
-    write(channel);
+    offByOne(state,msg);
+    write(state,channel,client);
 }
 
 const onConnectedHandler: Events["connected"] = (addr, port) => {
     log(`* Connected to ${addr}:${port}`);
-}
-
-function write(channel: string) {
-    if (state.doAnswer) client.say(channel, `${state.answer}`);
 }
 
 const client = new Client(opts);

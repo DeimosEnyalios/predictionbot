@@ -1,6 +1,7 @@
-import {ChatUserstate} from "tmi.js";
+import {ChatUserstate, Client} from "tmi.js";
 import {isCommand, isSpecialUser, log} from "./util";
 import {state} from "./types";
+import * as process from "process";
 
 export function prediction(state:state, tags: ChatUserstate, msg: string):boolean {
     if(!Number.isNaN(+msg)) {
@@ -64,6 +65,7 @@ export function stop(state,msg) {
         state.answer += ` Predictions: ${state.predictions.size}, min: ${min}, median: ${median}, max: ${max}`;
     }
 }
+
 export function result(state,msg) {
 
     if(isCommand(msg,'result')){
@@ -75,7 +77,7 @@ export function result(state,msg) {
         state.winners.sort();
         if(state.winners.length == 0){
             switch(Math.floor(Math.random() * 2)){
-                case 0: state.answer += '404 - no winners found'; break;
+                case 0: state.answer += 'ERROR(404) - no winners found'; break;
                 case 1: state.answer += 'What a surprising result, there are no winners!'; break;
                 default: state.answer += 'There are no winners ... I am sad';
             }
@@ -95,6 +97,7 @@ export function result(state,msg) {
         log(`The result is: ${result}`);
     }
 }
+
 export function winner(state,msg) {
     if(isCommand(msg,'winners')){
         state.doAnswer = true;
@@ -104,7 +107,41 @@ export function winner(state,msg) {
     }
 }
 
-
 export function isSpecial(tags: ChatUserstate) {
     return tags.mod === true || isSpecialUser(tags['display-name']);
+}
+
+export function write(state:state, channel: string, client: Client) {
+    if (state.doAnswer) {
+        if(process.env.TESTRUN == "true"){
+            client.say(channel, `${state.answer}`);
+        }else{
+            client.whisper(process.env.TESTUSER, state.answer);
+        }
+    }
+}
+
+export function offByOne(state,msg) {
+
+    if(isCommand(msg,'offByOne')){
+        state.doAnswer = true;
+        const result = msg.substring(14).trim();
+        let offByOners = [];
+        state.predictions.forEach((value, key) => {if(+value === (+result-1)) {offByOners.push(key)}});
+        state.predictions.forEach((value, key) => {if(+value === (+result+1)) {offByOners.push(key)}});
+        offByOners.sort();
+        if(offByOners.length == 0){
+            state.answer += `${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE} no one ${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE}`;
+            log('no offByOne');
+        }else{
+            let off = offByOners.join(', ');
+            log(`offByOne: ${off}`);
+            if(off.length < state.size){
+                state.answer +=  `${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE} ${off} ${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE}`;
+            }else{
+                state.answer +=  `${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE} too many ${process.env.EMOTE}${process.env.EMOTE}${process.env.EMOTE}`;
+            }
+        }
+        log(`The result is: ${result}`);
+    }
 }
