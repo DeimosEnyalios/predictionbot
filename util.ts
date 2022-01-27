@@ -19,3 +19,7 @@ export function isCommand(msg: string, partialCommand: string):boolean {4
     const command = '!' + process.env.PREFIX + partialCommand;
     return msg.toLowerCase().startsWith(command.toLowerCase());
 }
+
+export function compareLowerCase() {
+    return (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase());
+}

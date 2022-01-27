@@ -1,5 +1,5 @@
 import {ChatUserstate, Client} from "tmi.js";
-import {isCommand, isSpecialUser, log} from "./util";
+import {compareLowerCase, isCommand, isSpecialUser, log} from "./util";
 import {state} from "./types";
 
 export function prediction(state:state, tags: ChatUserstate, msg: string):boolean {
@@ -73,7 +73,7 @@ export function result(state,msg) {
         state.answer = `The result is: ${result}. `;
         state.winners = [];
         state.predictions.forEach((value, key) => {if(+value === +result) {state.winners.push(key)}});
-        state.winners.sort();
+        state.winners.sort(compareLowerCase());
         if(state.winners.length == 0){
             switch(Math.floor(Math.random() * 2)){
                 case 0: state.answer += 'ERROR(404) - no winners found'; break;
@@ -128,7 +128,7 @@ export function offByOne(state,msg) {
         let offByOners = [];
         state.predictions.forEach((value, key) => {if(+value === (+result-1)) {offByOners.push(key)}});
         state.predictions.forEach((value, key) => {if(+value === (+result+1)) {offByOners.push(key)}});
-        offByOners.sort();
+        offByOners.sort(compareLowerCase());
         if(offByOners.length == 0){
             state.answer += `${process.env.EMOTE} ${process.env.EMOTE} ${process.env.EMOTE} no one ${process.env.EMOTE} ${process.env.EMOTE} ${process.env.EMOTE}`;
             log('no offByOne');
