@@ -121,10 +121,9 @@ export function write(state:state, channel: string, client: Client) {
 }
 
 export function offByOne(state,msg) {
-
     if(isCommand(msg,'offByOne')){
         state.doAnswer = true;
-        const result = msg.substring(14).trim();
+        const result = msg.substring(16).trim();
         let offByOners = [];
         state.predictions.forEach((value, key) => {if(+value === (+result-1)) {offByOners.push(key)}});
         state.predictions.forEach((value, key) => {if(+value === (+result+1)) {offByOners.push(key)}});
