@@ -8,7 +8,7 @@ dotenv.config();
 
 const opts = {
     identity: {
-        username: process.env.USER,
+        username: process.env.USERNAME,
         password: process.env.PASS
     },
     channels: process.env.CHANNELS.split(", ")

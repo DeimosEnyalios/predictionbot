@@ -21,7 +21,7 @@ export function isCommand(msg: string, partialCommand: string):boolean {
 }
 
 export function isChannelName(msg: string){
-    const command = '!' + process.env.USER;
+    const command = '!' + process.env.USERNAME;
     return msg.toLowerCase().startsWith(command.toLowerCase());
 }
 
