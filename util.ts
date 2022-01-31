@@ -15,8 +15,13 @@ export function isSpecialUser(displayname: string):boolean {
 }
 
 
-export function isCommand(msg: string, partialCommand: string):boolean {4
+export function isCommand(msg: string, partialCommand: string):boolean {
     const command = '!' + process.env.PREFIX + partialCommand;
+    return msg.toLowerCase().startsWith(command.toLowerCase());
+}
+
+export function isChannelName(msg: string){
+    const command = '!' + process.env.USER;
     return msg.toLowerCase().startsWith(command.toLowerCase());
 }
 

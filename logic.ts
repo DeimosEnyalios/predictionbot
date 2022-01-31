@@ -1,5 +1,5 @@
 import {ChatUserstate, Client} from "tmi.js";
-import {compareLowerCase, isCommand, isSpecialUser, log} from "./util";
+import {compareLowerCase, isChannelName, isCommand, isSpecialUser, log} from "./util";
 import {state} from "./types";
 
 export function prediction(state:state, tags: ChatUserstate, msg: string):boolean {
@@ -22,15 +22,14 @@ export function resetAnswer(state:state) {
 }
 
 export function info(state:state, msg: string) {
-    if (msg.toLowerCase().includes('!' + process.env.USER.toLowerCase())) {
+    if (isChannelName(msg)) {
         state.doAnswer = true;
         state.answer = process.env.INFOTEXT;
     }
 }
 
 export function modinfo(state:state, msg: string) {
-    if (msg.toLowerCase().includes('!' + process.env.USER.toLowerCase())) {
-        state.doAnswer = true;
+    if (isChannelName(msg)) {
         const pre = process.env.PREFIX;
         state.answer += ' My commands:';
         state.answer += ` !${pre}Start !${pre}Stop !${pre}Result \{number\} `;
