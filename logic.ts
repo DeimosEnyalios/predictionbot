@@ -30,6 +30,7 @@ export function info(state:state, msg: string) {
 
 export function modinfo(state:state, msg: string) {
     if (msg.toLowerCase().includes('!' + process.env.USER.toLowerCase())) {
+        state.doAnswer = true;
         const pre = process.env.PREFIX;
         state.answer += ' My commands:';
         state.answer += ` !${pre}Start !${pre}Stop !${pre}Result \{number\} `;
