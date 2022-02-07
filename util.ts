@@ -1,3 +1,6 @@
+import * as fs from "fs";
+import * as os from "os";
+
 export function logDebug(msg: string) {
     if(process.env.DEBUG == "true"){
         console.log(msg);
@@ -27,4 +30,16 @@ export function isChannelName(msg: string){
 
 export function compareLowerCase() {
     return (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase());
+}
+
+export function writeToFile(name: string,content: string) {
+    let date_ob = new Date();
+    let year = date_ob.getFullYear();
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    let date = ("0" + date_ob.getDate()).slice(-2);
+    let hours = date_ob.getHours();
+    let minutes = date_ob.getMinutes();
+    let datestring = year+month+date+'_'+hours+'-'+minutes;
+    log(name+''+content)
+    fs.writeFile(datestring+'_'+name, content+os.EOL,{flag: 'a+'},err => {if(err) log('Error writing file: '+err)});
 }
