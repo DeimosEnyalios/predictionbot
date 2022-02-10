@@ -150,7 +150,7 @@ export function offByOne(state,msg) {
     }
 }
 
-function calcMode(...a: number[]): number{
+export function calcMode(...a: number[]): number{
     var bestStreak = 1;
     var bestElem = a[0];
     var currentStreak = 1;
@@ -158,9 +158,9 @@ function calcMode(...a: number[]): number{
 
     for (let i = 1; i < a.length; i++) {
         if (a[i-1] !== a[i]) {
-            if (currentStreak > bestStreak) {
-                bestStreak = currentStreak;
+            if (currentStreak >= bestStreak) {
                 bestElem = currentElem;
+                bestStreak = currentStreak;
             }
 
             currentStreak = 0;
@@ -170,5 +170,5 @@ function calcMode(...a: number[]): number{
         currentStreak++;
     }
 
-    return currentStreak > bestStreak ? currentElem : bestElem;
+    return currentStreak >= bestStreak ? currentElem : bestElem;
 }
