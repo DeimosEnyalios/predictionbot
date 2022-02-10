@@ -55,14 +55,15 @@ export function stop(state,msg) {
         state.predictions.forEach((value, key) => predictionNumbers.push(+value));
         let max = Math.max(...predictionNumbers);
         let min = Math.min(...predictionNumbers);
-        const sorted = predictionNumbers.sort((a, b) => a - b);
+        const sorted : number[] = predictionNumbers.sort((a, b) => a - b);
+        let mode = calcMode(...sorted);
         let median = 0;
         if (sorted.length % 2 == 0) {
             median = (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2;
         } else {
             median = sorted[(sorted.length - 1) / 2];
         }
-        state.answer += ` Predictions: ${state.predictions.size}, min: ${min}, median: ${median}, max: ${max}`;
+        state.answer += ` Predictions: ${state.predictions.size}, min: ${min}, median: ${median}, max: ${max}, mode: ${mode}`;
 
         util.writeToFile('Predictions.txt',JSON.stringify(Object.fromEntries(state.predictions)));
     }
@@ -147,4 +148,27 @@ export function offByOne(state,msg) {
         }
         util.log(`The result is: ${result}`);
     }
+}
+
+function calcMode(...a: number[]): number{
+    var bestStreak = 1;
+    var bestElem = a[0];
+    var currentStreak = 1;
+    var currentElem = a[0];
+
+    for (let i = 1; i < a.length; i++) {
+        if (a[i-1] !== a[i]) {
+            if (currentStreak > bestStreak) {
+                bestStreak = currentStreak;
+                bestElem = currentElem;
+            }
+
+            currentStreak = 0;
+            currentElem = a[i];
+        }
+
+        currentStreak++;
+    }
+
+    return currentStreak > bestStreak ? currentElem : bestElem;
 }
